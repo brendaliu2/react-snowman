@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ENGLISH_WORDS, randomWord } from "./words";
 
 import "./Snowman.css";
 import img0 from "./0.png";
@@ -25,14 +26,14 @@ import img6 from "./6.png";
 
 function Snowman({
   images = [img0, img1, img2, img3, img4, img5, img6],
-  words = ["apple"],
+  words = ENGLISH_WORDS,
   maxWrong = 6,
 }) {
   /** by default, allow 6 guesses and use provided gallows images. */
 
   const [nWrong, setNWrong] = useState(0);
   const [guessedLetters, setGuessedLetters] = useState(() => new Set());
-  const [answer, setAnswer] = useState((words)[0]);
+  const [answer, setAnswer] = useState(randomWord(words));
 
   /** guessedWord: show current-state of word:
    if guessed letters are {a,p,e}, show "app_e" for "apple"
@@ -59,6 +60,17 @@ function Snowman({
     setNWrong(n => n + (answer.includes(ltr) ? 0 : 1));
   }
 
+  /** restartGame: set up new game:
+   * set nWrong state back to 0
+   * set guessedLetters state to new set
+   * set answer to new word from words list
+  */
+  function restartGame() {
+    setNWrong(n => 0);
+    setGuessedLetters(n => new Set());
+    setAnswer(randomWord(words));
+  }
+
   /** generateButtons: return array of letter buttons to render */
   function generateButtons() {
     return "abcdefghijklmnopqrstuvwxyz".split("").map(ltr => (
@@ -79,13 +91,14 @@ function Snowman({
       {nWrong === maxWrong ?
         <div><p>You lose!</p>
           <p>Correct word was: {answer}</p>
-          <button>Lost</button>
+          <button onClick={restartGame}>Restart</button>
         </div> :
         <div>
           <img src={(images)[nWrong]} alt={nWrong} />
           <p>Wrong Guesses: {nWrong}</p>
           <p className="Snowman-word">{guessedWord()}</p>
           <p>{generateButtons()}</p>
+          <button onClick={restartGame}>Restart</button>
         </div>
       }
     </div>

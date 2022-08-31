@@ -5,23 +5,22 @@ describe('test Snowman component', function () {
 
   it('shows correct display when lose', function () {
 
-    //if nWrong = maxGuesses ... 
+    //if nWrong = maxGuesses ...
     // hidden letter buttons, show you lose message, remove photo, display correct word
-    const { container } = render(<Snowman />);
+    const { container } = render(<Snowman words={["apple"]} />);
 
-    fireEvent.click(container.querySelector('.z'))
-    fireEvent.click(container.querySelector('.w'))
-    fireEvent.click(container.querySelector('.y'))
-    fireEvent.click(container.querySelector('.m'))
-    fireEvent.click(container.querySelector('.h'))
-    fireEvent.click(container.querySelector('.n'))
-    
+    fireEvent.click(container.querySelector('.z'));
+    fireEvent.click(container.querySelector('.w'));
+    fireEvent.click(container.querySelector('.y'));
+    fireEvent.click(container.querySelector('.m'));
+    fireEvent.click(container.querySelector('.h'));
+    fireEvent.click(container.querySelector('.n'));
+
 
     const snowmanDiv = container.querySelector('.Snowman');
     expect(snowmanDiv).toContainHTML('You lose!');
     expect(snowmanDiv).toContainHTML('apple');
-    // expect(snowmanDiv).not.toBeInTheDocument('img');
-    // expect("btn").not.toBeInTheDocument();
+    expect(container.querySelector('img')).not.toBeInTheDocument();
   });
 
 
